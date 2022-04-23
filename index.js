@@ -1,12 +1,31 @@
-const express = require('express');
 const path = require('path');
 const app = express();
+
+const bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({extend:true}));
 
 // add directory to public folder
 app.use(express.static('public'));
 //add views directory path
-@@ -9,6 +10,14 @@ app.set('views', path.join(__dirname, 'views'));
+@@ -10,6 +13,23 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+
+
+app.get('/login', (req, res) => {
+    res.render('login');
+});
+
+app.post('/login', (req, res) => {
+    let username = req.body.username;
+    let password = req.body.password;
+    if(username === 'user' && password === 'qwerty') {
+        res.redirect('/dashboard');
+    }
+});
+
+app.get('/dashboard', (req, res) => {
+    res.render('dashboard');
+});
 
 
 app.get('/questions', (req, res) => {
@@ -16,7 +35,6 @@ app.get('/questions', (req, res) => {
     ]
     res.render('index', {questions:questions})
 });
-
 // set up brauser aadress row router
 app.get('/', (req, res) => {
     //create html response
